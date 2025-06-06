@@ -66,6 +66,9 @@ const myRequest = {
     body: body
 };
 
+console.log("headers" + headers);
+
+
 $task.fetch(myRequest).then(response => {
     console.log(response.statusCode + "\n\n" + response.body);
     $done();
