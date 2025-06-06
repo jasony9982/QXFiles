@@ -66,8 +66,7 @@ const myRequest = {
     body: body
 };
 
-console.log("headers" + headers);
-
+console.log("headers: " + JSON.stringify(headers));
 
 $task.fetch(myRequest).then(response => {
     console.log(response.statusCode + "\n\n" + response.body);
