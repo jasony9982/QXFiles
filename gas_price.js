@@ -60,7 +60,7 @@ function testNextUrl() {
 
 function handleResponse(data) {
   var obj = JSON.parse(data);
-  console.log(obj);
+  console.log(data);
 
   if (obj.code === 200) {
     var prov = obj.result.prov;
