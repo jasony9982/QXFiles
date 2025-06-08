@@ -31,6 +31,18 @@ function get_X_B3_TraceId() {
   return longToHex(timestamp);
 }
 
+function getFormatterTime() {
+  const now = new Date();
+  const month = now.getMonth() + 1;  // 月份（1-12）
+  const day = now.getDate();         // 日（1-31）
+  const hours = String(now.getHours()).padStart(2, '0');      // 时（两位数）
+  const minutes = String(now.getMinutes()).padStart(2, '0');  // 分（两位数）
+  const seconds = String(now.getSeconds()).padStart(2, '0');   // 秒（两位数）
+  const weekdays = ['日', '一', '二', '三', '四', '五', '六']; // 周X简写
+  const weekday = weekdays[now.getDay()]; // 获取星期索引（0=周日）
+  
+  return `${month}月${day}日 周${weekday} ${hours}:${minutes}:${seconds}`;
+}
 
 
 const url = `https://ncc.popo.netease.com/api/bs-open/api/v1/door/open`;
@@ -66,9 +78,10 @@ const myRequest = {
     headers: headers,
     body: body
 };
-console.log("headers: " + JSON.stringify(headers));
+console.log("headers: " + JSON.stringify(headers) + "\n\n");
 $task.fetch(myRequest).then(response => {
     console.log(response.statusCode + "\n\n" + response.body);
+    $notify("🚀恭喜，出口打卡成功", "打卡时间：" + getFormatterTime()); 
     $done();
 }, reason => {
     console.log(reason.error);
