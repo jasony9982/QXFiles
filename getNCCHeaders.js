@@ -12,7 +12,8 @@ const headersToSave = {
 };
 
 // 持久化存储
-$persistentStore.write(JSON.stringify(headersToSave), headerKey);
+//$persistentStore.write(JSON.stringify(headersToSave), headerKey);
+$prefs.setValueForKey(JSON.stringify(headersToSave), "saved_ncc_api_headers");
 
 // 继续原始请求
 $done({});
