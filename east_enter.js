@@ -83,8 +83,6 @@ const myRequest = {
 };
 
 console.log("headers: " + JSON.stringify(headers) + "\n\n");
-
- return
 $task.fetch(myRequest).then(response => {
     console.log(response.statusCode + "\n\n" + response.body);
     $notify("🚀恭喜，入口打卡成功", "打卡时间：" + getFormatterTime()); 
