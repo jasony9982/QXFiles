@@ -43,6 +43,10 @@ function getFormatterTime() {
   
   return `${month}月${day}日 周${weekday} ${hours}:${minutes}:${seconds}`;
 }
+const savedHeaders = $prefs.valueForKey("saved_ncc_api_headers");
+let mergedHeaders = {};
+mergedHeaders = JSON.parse(savedHeaders);
+console.log("已加载存储的headers:", mergedHeaders);
 
 const url = `https://ncc.popo.netease.com/api/bs-open/api/v1/door/open`;
 const method = `POST`;
@@ -66,7 +70,8 @@ const headers = {
 'versionBuild' : `32573`,
 'trulyClientIp' : `124.160.201.216`,
 'macAddress' : `02:00:00:00:00:00`,
-'Cookie' : `isVisitor=0`
+'Cookie' : `isVisitor=0`,
+  ...mergedHeaders
 };
 const body = `{"id":"29862219","appType":9,"doorMac":"620831307848774D4D","useDevice":"a82e641d8356fb9509621261db8ceced","platform":"IOS"}`;
 
@@ -79,6 +84,7 @@ const myRequest = {
 
 console.log("headers: " + JSON.stringify(headers) + "\n\n");
 
+ return
 $task.fetch(myRequest).then(response => {
     console.log(response.statusCode + "\n\n" + response.body);
     $notify("🚀恭喜，入口打卡成功", "打卡时间：" + getFormatterTime()); 
