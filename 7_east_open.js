@@ -98,5 +98,4 @@ $task.fetch(myRequest).then(response => {
   console.log(response.statusCode + "\n\n" + response.body);
   $notify("❌打卡失败", "打卡时间：" + getFormatterTime());
   $done();
-  $done();
 });
