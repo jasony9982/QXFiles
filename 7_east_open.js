@@ -44,10 +44,12 @@ function getFormatterTime() {
   return `${month}月${day}日 周${weekday} ${hours}:${minutes}:${seconds}`;
 }
 const savedHeaders = $prefs.valueForKey("saved_ncc_api_headers");
+
 let nccHeader = {};
 try {
   if (savedHeaders) {
     nccHeader = JSON.parse(savedHeaders);
+    console.log("存储的header:" + savedHeaders);
   }
   if (!nccHeader || !nccHeader.Authorization) {
     console.log("没有获取到存储的header");
