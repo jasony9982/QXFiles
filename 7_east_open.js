@@ -84,7 +84,6 @@ const headers = {
   'Authorization': `BDCD330323A22A748628B006ABC541CE6DCFBB8A97BC2970D6E8E48192387E4077E1439498E7B501507FC134FC3143D4D0D3AF79D66114FA`,
   'clientLocalIp': `100.102.107.153`,
   'versionBuild': `32573`,
-  'trulyClientIp': `124.160.201.216`,
   'macAddress': `02:00:00:00:00:00`,
   ...nccHeader,
 };
@@ -102,7 +101,7 @@ const myRequest = {
 
 $task.fetch(myRequest).then(response => {
   console.log(response.statusCode + "\n\n" + response.body);
-  $notify("🚀恭喜，九楼入口开门成功", "开门时间：" + getFormatterTime());
+  $notify("🚀恭喜，七楼入口开门成功", "开门时间：" + getFormatterTime());
   $done();
 }, reason => {
   console.log("请求失败: " + JSON.stringify(reason));

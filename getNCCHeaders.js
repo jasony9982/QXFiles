@@ -4,8 +4,7 @@ const timestampKey = "ncc_headers_save_time";
 // 获取上一次保存的时间戳
 const lastSaveTime = $prefs.valueForKey(timestampKey);
 const currentTime = Date.now();
-// 十分钟的毫秒数
-const TEN_MINUTES = 10 * 60 * 1000;
+const TEN_MINUTES = 5 * 60 * 1000;
 
 // 检查是否需要保存
 let needToSave = true;
@@ -18,22 +17,27 @@ if (lastSaveTime) {
 }
 
 if (needToSave) {
-    // 获取并存储headers
-    const headersToSave = {
-        // 选择需要存储的特定header，避免存储敏感信息
-        "Authorization": $request.headers["Authorization"],
-        "clientLocalIp": $request.headers["clientLocalIp"],
-        "nccClientIp": $request.headers["nccClientIp"],
-        "trulyClientIp": $request.headers["trulyClientIp"],
-        "saveTime": currentTime // 保存时间戳，方便调试
-    };
+    // 检查 trulyClientIp 是否存在
+    if ($request.headers["trulyClientIp"]) {
+        // 获取并存储headers
+        const headersToSave = {
+            // 选择需要存储的特定header，避免存储敏感信息
+            "Authorization": $request.headers["Authorization"],
+            "clientLocalIp": $request.headers["clientLocalIp"],
+            "nccClientIp": $request.headers["nccClientIp"],
+            "deviceId": $request.headers["deviceId"],
+            "trulyClientIp": $request.headers["trulyClientIp"]
+        };
 
-    // 持久化存储
-    $prefs.setValueForKey(JSON.stringify(headersToSave), headerKey);
-    // 保存当前时间戳
-    $prefs.setValueForKey(currentTime.toString(), timestampKey);
+        // 持久化存储
+        $prefs.setValueForKey(JSON.stringify(headersToSave), headerKey);
+        // 保存当前时间戳
+        $prefs.setValueForKey(currentTime.toString(), timestampKey);
 
-    $notify("🚀恭喜，已保存NCC API Headers");
+        $notify("🚀恭喜，已保存NCC API Headers");
+    } else {
+        console.log("trulyClientIp 不存在，跳过保存");
+    }
 }
 
 // 继续原始请求
