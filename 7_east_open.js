@@ -45,13 +45,21 @@ function getFormatterTime() {
 }
 const savedHeaders = $prefs.valueForKey("saved_ncc_api_headers");
 let nccHeader = {};
-nccHeader = JSON.parse(savedHeaders);
-if (!nccHeader || !nccHeader.Authorization) {
-  console.log("没有获取到存储的header");
+try {
+  if (savedHeaders) {
+    nccHeader = JSON.parse(savedHeaders);
+  }
+  if (!nccHeader || !nccHeader.Authorization) {
+    console.log("没有获取到存储的header");
+    $done();
+    return;
+  }
+  console.log("存储的nccHeader:", nccHeader);
+} catch (error) {
+  console.log("解析存储的header失败:", error);
   $done();
   return;
 }
-console.log("存储的nccHeader:", nccHeader);
 
 
 const url = `https://ncc.popo.netease.com/api/bs-im/v1/open/bt/open-door`;
@@ -95,7 +103,7 @@ $task.fetch(myRequest).then(response => {
   $notify("🚀恭喜，入口打卡成功", "打卡时间：" + getFormatterTime());
   $done();
 }, reason => {
-  console.log(response.statusCode + "\n\n" + response.body);
+  console.log("请求失败: " + JSON.stringify(reason));
   $notify("❌打卡失败", "打卡时间：" + getFormatterTime());
   $done();
 });
