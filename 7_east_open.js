@@ -40,57 +40,63 @@ function getFormatterTime() {
   const seconds = String(now.getSeconds()).padStart(2, '0');   // 秒（两位数）
   const weekdays = ['日', '一', '二', '三', '四', '五', '六']; // 周X简写
   const weekday = weekdays[now.getDay()]; // 获取星期索引（0=周日）
-  
+
   return `${month}月${day}日 周${weekday} ${hours}:${minutes}:${seconds}`;
 }
 const savedHeaders = $prefs.valueForKey("saved_ncc_api_headers");
-let mergedHeaders = {};
-mergedHeaders = JSON.parse(savedHeaders);
-if (!savedHeaders？["Authorization"]) {
+let nccHeader = {};
+nccHeader = JSON.parse(savedHeaders);
+if (!nccHeader || !nccHeader.Authorization) {
   console.log("没有获取到存储的header");
   $done();
-  return
+  return;
 }
-console.log("已加载存储的headers:", mergedHeaders);
+console.log("存储的nccHeader:", nccHeader);
 
 
 const url = `https://ncc.popo.netease.com/api/bs-im/v1/open/bt/open-door`;
 const method = `POST`;
 const headers = {
-'Accept-Encoding' : `gzip, deflate, br`,
-'X-B3-TraceId' : get_X_B3_TraceId(),
-'Host' : `ncc.popo.netease.com`,
-'deviceId' : `a82e641d8356fb9509621261db8ceced`,
-'X-B3-SpanId' : get_X_B3_SpanId(),
-'deviceType' : `3`,
-'appVersion' : `4.15.0`,
-'Connection' : `Keep-Alive`,
-'nccClientIp' : `124.160.201.216`,
-'Accept-Language' : `zh-CN`,
-'User-Agent' : `popo ios 4.15.0`,
-'Content-Type' : `application/json`,
-'Accept' : `*/*`,
-'deviceVersion' : `iOS 18.5`,
-'Authorization' : `BDCD330323A22A748628B006ABC541CE6DCFBB8A97BC2970D6E8E48192387E4077E1439498E7B501507FC134FC3143D4D0D3AF79D66114FA`,
-'clientLocalIp' : `100.102.107.153`,
-'versionBuild' : `32573`,
-'trulyClientIp' : `124.160.201.216`,
-'macAddress' : `02:00:00:00:00:00`,
-  ...savedHeaders,
+  'Accept-Encoding': `gzip, deflate, br`,
+  'X-B3-TraceId': get_X_B3_TraceId(),
+  'Host': `ncc.popo.netease.com`,
+  'deviceId': `a82e641d8356fb9509621261db8ceced`,
+  'X-B3-SpanId': get_X_B3_SpanId(),
+  'deviceType': `3`,
+  'appVersion': `4.15.0`,
+  'Connection': `Keep-Alive`,
+  'nccClientIp': `124.160.201.216`,
+  'Accept-Language': `zh-CN`,
+  'User-Agent': `popo ios 4.15.0`,
+  'Content-Type': `application/json`,
+  'Accept': `*/*`,
+  'deviceVersion': `iOS 18.5`,
+  'Authorization': `BDCD330323A22A748628B006ABC541CE6DCFBB8A97BC2970D6E8E48192387E4077E1439498E7B501507FC134FC3143D4D0D3AF79D66114FA`,
+  'clientLocalIp': `100.102.107.153`,
+  'versionBuild': `32573`,
+  'trulyClientIp': `124.160.201.216`,
+  'macAddress': `02:00:00:00:00:00`,
+  ...nccHeader,
 };
 const body = `{"pid":10405,"doorMac":"32454E373546647549","userDevice":"e6c78961-6dc2-4b41-9920-e327359a4cee"}`;
 
+console.log("组合的header为:" + JSON.stringify(headers));
+
+
 const myRequest = {
-    url: url,
-    method: method,
-    headers: headers,
-    body: body
+  url: url,
+  method: method,
+  headers: headers,
+  body: body
 };
 
 $task.fetch(myRequest).then(response => {
-    console.log(response.statusCode + "\n\n" + response.body);
-    $done();
+  console.log(response.statusCode + "\n\n" + response.body);
+  $notify("🚀恭喜，入口打卡成功", "打卡时间：" + getFormatterTime());
+  $done();
 }, reason => {
-    console.log(reason.error);
-    $done();
+  console.log(response.statusCode + "\n\n" + response.body);
+  $notify("❌打卡失败", "打卡时间：" + getFormatterTime());
+  $done();
+  $done();
 });
