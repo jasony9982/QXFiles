@@ -100,10 +100,10 @@ const myRequest = {
 
 $task.fetch(myRequest).then(response => {
   console.log(response.statusCode + "\n\n" + response.body);
-  $notify("🚀恭喜，入口打卡成功", "打卡时间：" + getFormatterTime());
+  $notify("🚀恭喜，九楼入口开门成功", "开门时间：" + getFormatterTime());
   $done();
 }, reason => {
   console.log("请求失败: " + JSON.stringify(reason));
-  $notify("❌打卡失败", "打卡时间：" + getFormatterTime());
+  $notify("❌开门失败", "开门时间：" + getFormatterTime());
   $done();
 });
