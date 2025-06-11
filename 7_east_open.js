@@ -49,14 +49,13 @@ let nccHeader = {};
 try {
   if (savedHeaders) {
     nccHeader = JSON.parse(savedHeaders);
-    console.log("存储的header:" + savedHeaders);
   }
   if (!nccHeader || !nccHeader.Authorization) {
     console.log("没有获取到存储的header");
     $done();
     return;
   }
-  console.log("存储的nccHeader:", nccHeader);
+  console.log("存储的nccHeader:", JSON.stringify(nccHeader));
 } catch (error) {
   console.log("解析存储的header失败:", error);
   $done();

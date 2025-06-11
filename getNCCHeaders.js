@@ -4,7 +4,7 @@ const timestampKey = "ncc_headers_save_time";
 // 获取上一次保存的时间戳
 const lastSaveTime = $prefs.valueForKey(timestampKey);
 const currentTime = Date.now();
-const TEN_MINUTES = 5 * 60 * 1000;
+const TEN_MINUTES = 10 * 60 * 1000;
 
 // 检查是否需要保存
 let needToSave = true;
