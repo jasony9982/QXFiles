@@ -46,7 +46,7 @@ function getFormatterTime() {
 const savedHeaders = $prefs.valueForKey("saved_ncc_api_headers");
 let mergedHeaders = {};
 mergedHeaders = JSON.parse(savedHeaders);
-if (!savedHeaders) {
+if (!savedHeaders？["Authorization"]) {
   console.log("没有获取到存储的header");
   $done();
   return
@@ -58,23 +58,23 @@ const url = `https://ncc.popo.netease.com/api/bs-im/v1/open/bt/open-door`;
 const method = `POST`;
 const headers = {
 'Accept-Encoding' : `gzip, deflate, br`,
-'X-B3-TraceId' : `68f07db9d1d2df61000001975d1d53e6`,
+'X-B3-TraceId' : get_X_B3_TraceId(),
 'Host' : `ncc.popo.netease.com`,
 'deviceId' : `a82e641d8356fb9509621261db8ceced`,
-'X-B3-SpanId' : `68f07db9d1d2df61`,
+'X-B3-SpanId' : get_X_B3_SpanId(),
 'deviceType' : `3`,
 'appVersion' : `4.15.0`,
 'Connection' : `Keep-Alive`,
-'nccClientIp' : `2408:8441:a08:71fb:598:504b:cc9f:3704`,
+'nccClientIp' : `124.160.201.216`,
 'Accept-Language' : `zh-CN`,
 'User-Agent' : `popo ios 4.15.0`,
 'Content-Type' : `application/json`,
 'Accept' : `*/*`,
 'deviceVersion' : `iOS 18.5`,
-'Authorization' : `BDCD330323A22A748628B006ABC541CE6DCFBB8A97BC2970D6E8E48192387E4077E1439498E7B50198D89E278D61B929311B42033A563FAA`,
-'clientLocalIp' : `10.3.71.216`,
+'Authorization' : `BDCD330323A22A748628B006ABC541CE6DCFBB8A97BC2970D6E8E48192387E4077E1439498E7B501507FC134FC3143D4D0D3AF79D66114FA`,
+'clientLocalIp' : `100.102.107.153`,
 'versionBuild' : `32573`,
-'trulyClientIp' : `211.90.237.45`,
+'trulyClientIp' : `124.160.201.216`,
 'macAddress' : `02:00:00:00:00:00`,
   ...savedHeaders,
 };
