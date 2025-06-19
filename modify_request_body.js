@@ -13,7 +13,8 @@ function modifyRequestBody() {
             "620831307848774D4D",
             "62084B786649727A6C"
         ];
-        
+
+        let hasMJ = false
         // 生成-50到-99之间的随机signal值
         function getRandomSignal() {
             return -Math.floor(Math.random() * 50) - 50; // 生成-50到-99之间的随机整数
@@ -27,6 +28,9 @@ function modifyRequestBody() {
         if (requestData.bluetoothMacList && Array.isArray(requestData.bluetoothMacList)) {
             requestData.bluetoothMacList.forEach((item, index) => {
                 if (item && item.bluetoothMac) {
+                    if (item.bluetoothMac.startsWith("6208") {
+                        hasMJ = true
+                    }
                     existingMacs.add(item.bluetoothMac);
                     macIndexMap[item.bluetoothMac] = index;
                 }
@@ -35,19 +39,22 @@ function modifyRequestBody() {
             // 如果原始请求没有蓝牙列表，创建一个
             requestData.bluetoothMacList = [];
         }
-        
-        // 处理必需的记录
-        for (let mac of requiredMacs) {
-            if (!existingMacs.has(mac)) {
-                // 如果不存在，添加带有随机signal值的新记录
-                const newRecord = {
-                    "bluetoothMac": mac,
-                    "signal": getRandomSignal()
-                };
-                requestData.bluetoothMacList.push(newRecord);
-                console.log('添加记录: ' + JSON.stringify(newRecord));
+
+        if (!hasMJ) {//没有门禁的情况下 才新增
+            // 处理必需的记录
+            for (let mac of requiredMacs) {
+                if (!existingMacs.has(mac)) {
+                    // 如果不存在，添加带有随机signal值的新记录
+                    const newRecord = {
+                        "bluetoothMac": mac,
+                        "signal": getRandomSignal()
+                    };
+                    requestData.bluetoothMacList.push(newRecord);
+                    console.log('添加记录: ' + JSON.stringify(newRecord));
+                }
             }
         }
+
         
         // 将修改后的数据转换回字符串
         const newBody = JSON.stringify(requestData);
