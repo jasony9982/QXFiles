@@ -49,9 +49,6 @@ try {
   if (obj.status === 1) {
     // 发送通知
     const requestUrl = $request.url;
-    console.log("成功获取轮询ID: " + obj.data);
-    // 获取当前请求的URL
-    console.log("当前请求URL: " + requestUrl);
     let doorType = 0
     if (requestUrl.indexOf('bluetoothMac=620831307848774D4D') !== -1) {
       doorType = 1; // 入口
@@ -68,9 +65,7 @@ try {
     if (savedHeaders) {
       try {
         mergedHeaders = JSON.parse(savedHeaders);
-        console.log("已加载存储的headers:", mergedHeaders);
       } catch (e) {
-        console.log("解析存储的headers失败:", e);
       }
     }
 
@@ -112,12 +107,9 @@ try {
       headers: headers,
       body: requestBody
     };
-
-    console.log("准备发送开门请求，headers: " + JSON.stringify(headers));
-
     // 发送开门请求
     $task.fetch(doorRequest).then(response => {
-      console.log("开门请求响应: " + response.status + "\n\n" + response.body);
+      console.log("开门请求响应: " + response.body);
       if (doorType === 1) {
         $notify("🚀恭喜，入口打卡成功", "打卡时间：" + getFormatterTime(), `轮询Id:${obj.data} \n请求URL: ${requestUrl}`);
       } else {
