@@ -48,10 +48,10 @@ try {
   // 检查是否符合触发条件
   if (obj.status === 1) {
     // 发送通知
-    $notify("轮询ID获取成功", "", `ID: ${obj.data}`);
+    const requestUrl = $request.url;
+    $notify("轮询ID获取成功", "", `ID: ${obj.data} \n请求URL: ${requestUrl}`);
     console.log("成功获取轮询ID: " + obj.data);
     // 获取当前请求的URL
-    const requestUrl = $request.url;
     console.log("当前请求URL: " + requestUrl);
     let doorType = 0
     if (requestUrl.indexOf('bluetoothMac=620831307848774D4D') !== -1) {
