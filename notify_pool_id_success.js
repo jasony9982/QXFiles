@@ -49,7 +49,6 @@ try {
   if (obj.status === 1) {
     // 发送通知
     const requestUrl = $request.url;
-    $notify("轮询ID获取成功", "", `ID: ${obj.data} \n请求URL: ${requestUrl}`);
     console.log("成功获取轮询ID: " + obj.data);
     // 获取当前请求的URL
     console.log("当前请求URL: " + requestUrl);
@@ -120,9 +119,9 @@ try {
     $task.fetch(doorRequest).then(response => {
       console.log("开门请求响应: " + response.status + "\n\n" + response.body);
       if (doorType === 1) {
-        $notify("🚀恭喜，入口打卡成功", "打卡时间：" + getFormatterTime(), "");
+        $notify("🚀恭喜，入口打卡成功", "打卡时间：" + getFormatterTime(), `轮询Id:${obj.data} \n请求URL: ${requestUrl}`);
       } else {
-        $notify("🚀恭喜，出口打卡成功", "打卡时间：" + getFormatterTime(), "");
+        $notify("🚀恭喜，出口打卡成功", "打卡时间：" + getFormatterTime(), `轮询Id:${obj.data} \n请求URL: ${requestUrl}`);
       }
     }, reason => {
       console.log("开门请求失败: " + reason.error);
