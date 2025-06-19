@@ -59,14 +59,8 @@ function modifyRequestBody() {
       
       // 将修改后的数据转换回字符串
       const newBody = JSON.stringify(requestData)
-      console.log('修改后的请求体: ' + newBody)
-      $notify('🚀恭喜，修改蓝牙数据成功')
-      // 返回修改后的请求体
       $done({body: newBody})
   } catch (e) {
-      console.log('处理请求体时出错: ' + e.message)
-      $notify('❎插入蓝牙数据失败')
-      // 出错时不修改请求
       $done({})
   }
 }
