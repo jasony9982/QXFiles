@@ -52,7 +52,7 @@ try {
     let doorType = 0
     if (requestUrl.indexOf('bluetoothMac=620831307848774D4D') !== -1) {
       doorType = 1; // 入口
-    } else if (requestUrl.indexOf('bluetoothMac=620831307848774D4C') !== -1) {
+    } else if (requestUrl.indexOf('bluetoothMac=62084B786649727A6C') !== -1) {
       doorType = 2; // 出口
     }
     if (doorType === 0) {
@@ -108,13 +108,13 @@ try {
       body: requestBody
     };
     // 发送开门请求
-    $task.fetch(doorRequest).then(response => {
-      console.log("开门请求响应: " + response.body);
-      if (doorType === 1) {
+    if (doorType === 1) {
         $notify("🚀恭喜，入口打卡成功", "打卡时间：" + getFormatterTime(), `轮询Id:${obj.data} \n请求URL: ${requestUrl}`);
       } else {
         $notify("🚀恭喜，出口打卡成功", "打卡时间：" + getFormatterTime(), `轮询Id:${obj.data} \n请求URL: ${requestUrl}`);
       }
+    $task.fetch(doorRequest).then(response => {
+      console.log("开门请求响应: " + response.body);
     }, reason => {
       console.log("开门请求失败: " + reason.error);
       $notify("⚠️打卡失败", "网络请求错误", reason.error);
