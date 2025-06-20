@@ -34,7 +34,7 @@ if (needToSave) {
         // 保存当前时间戳
         $prefs.setValueForKey(currentTime.toString(), timestampKey);
 
-        $notify("🚀恭喜，已保存NCC API Headers");
+        //$notify("🚀恭喜，已保存NCC API Headers");
     } else {
         console.log("trulyClientIp 不存在，跳过保存");
     }
