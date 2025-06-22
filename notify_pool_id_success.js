@@ -41,6 +41,7 @@ function getFormatterTime() {
 
 // 解析原始响应
 let body = $response.body;
+let smartOfiiceHeaders = $response.headers;
 
 try {
   let obj = JSON.parse(body);
@@ -107,22 +108,24 @@ try {
       headers: headers,
       body: requestBody
     };
-    // 发送开门请求
-    if (doorType === 1) {
+
+    $task.fetch(doorRequest).then(response => {
+      console.log("开门请求响应: " + response.body);
+      // 发送开门请求
+      if (doorType === 1) {
         $notify("🚀恭喜，入口打卡成功", "打卡时间：" + getFormatterTime(), `轮询Id:${obj.data} \n请求URL: ${requestUrl}`);
       } else {
         $notify("🚀恭喜，出口打卡成功", "打卡时间：" + getFormatterTime(), `轮询Id:${obj.data} \n请求URL: ${requestUrl}`);
       }
-    $task.fetch(doorRequest).then(response => {
-      console.log("开门请求响应: " + response.body);
+      $done({ body });
     }, reason => {
       console.log("开门请求失败: " + reason.error);
       $notify("⚠️打卡失败", "网络请求错误", reason.error);
+      $done({ body });
     });
   }
 
-  // 不修改原始响应
-  $done({ body });
+
 } catch (e) {
   console.log("脚本执行出错: " + e);
   $done({ body });
