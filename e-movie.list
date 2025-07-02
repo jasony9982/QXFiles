@@ -2,9 +2,13 @@
 #见手青
 DOMAIN, jsq.vban.xyz
 //彩虹
-DOMAIN, yhemby.top
+DOMAIN, ch.feiyue.lol
 //叔服
 DOMAIN, emby3.mcjoker.xyz
 #终点站高可用入口
 DOMAIN-KEYWORD, emby.wtf
 DOMAIN-KEYWORD, term.wtf
+
+DOMAIN-KEYWORD, plex
+
+
