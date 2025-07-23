@@ -43,17 +43,28 @@ function modifyRequestBody() {
 
       if (!hasMJ) {//没有门禁的情况下 才新增
           // 处理必需的记录
-          for (const mac of requiredMacs) {
-              if (!existingMacs.has(mac)) {
-                  // 如果不存在，添加带有随机signal值的新记录
-                  const newRecord = {
-                      'bluetoothMac': mac,
-                      'signal': getRandomSignal()
-                  }
-                  requestData.bluetoothMacList.push(newRecord)
-                  console.log('添加记录: ' + JSON.stringify(newRecord))
-              }
+        const signal = getRandomSignal()
+         const newRecord1 = {
+              'bluetoothMac': "620831307848774D4D",
+              'signal': signal
           }
+          const newRecord2 = {
+              'bluetoothMac': "62084B786649727A6C",
+              'signal': signal-6
+          }
+          requestData.bluetoothMacList.push(newRecord1)
+        requestData.bluetoothMacList.push(newRecord2)
+          // for (const mac of requiredMacs) {
+          //     if (!existingMacs.has(mac)) {
+          //         // 如果不存在，添加带有随机signal值的新记录
+          //         const newRecord = {
+          //             'bluetoothMac': mac,
+          //             'signal': getRandomSignal()
+          //         }
+          //         requestData.bluetoothMacList.push(newRecord)
+          //         console.log('添加记录: ' + JSON.stringify(newRecord))
+          //     }
+          // }
       }
 
       
