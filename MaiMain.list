@@ -1,5 +1,5 @@
-host, tk2.taou.com, Direct
-host, h3.open.taou.com, Direct
-host, i9.taou.com, Direct
-host, maimai.com, Direct
-host, maimai.cn, Direct
+DOMAIN, tk2.taou.com, Direct
+DOMAIN, h3.open.taou.com, Direct
+DOMAIN, i9.taou.com, Direct
+DOMAIN, maimai.com, Direct
+DOMAIN, maimai.cn, Direct
