@@ -1,0 +1,37 @@
+
+# === 秒针监测 ===
+HOST-SUFFIX, miaozhen.com, REJECT
+
+# === TopOn / AnyThink（葱峰聚合） ===
+HOST-SUFFIX, toponad.com, REJECT
+HOST-SUFFIX, anythinktech.com, REJECT
+
+# === 穿山甲/Pangle（字节） ===
+HOST-SUFFIX, pglstatp-toutiao.com, REJECT
+HOST-SUFFIX, pangolin-sdk-toutiao.com, REJECT
+HOST-SUFFIX, buclick.com, REJECT
+HOST-SUFFIX, ugdtimg.com, REJECT
+
+# === 百度联盟 ===
+HOST, mobads.baidu.com, REJECT
+HOST, mobads-logs.baidu.com, REJECT
+HOST, bj.bcebos.com, REJECT
+HOST-SUFFIX, union.baidu.com, REJECT
+
+# === 广点通/GDT（腾讯） ===
+HOST-SUFFIX, gdt.qq.com, REJECT
+HOST-SUFFIX, gdtimg.com, REJECT
+HOST-SUFFIX, beacon.qq.com, REJECT
+
+# === GroMore（字节聚合） ===
+HOST-SUFFIX, gromore.com, REJECT
+
+# === 快手广告 ===
+HOST, open.kuaishou.com, REJECT
+HOST-SUFFIX, kuaishouzt.com, REJECT
+
+# === 贝子 ===
+HOST-SUFFIX, beizi.biz, REJECT
+
+# === UbiX（即刻/阿里） ===
+HOST-SUFFIX, ubixitech.com, REJECT
