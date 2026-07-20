@@ -1,12 +1,9 @@
 #emby
-#见手青
-DOMAIN, jsq.vban.xyz
-//彩虹
-DOMAIN, ch.feiyue.lol
-DOMAIN, emby.heisi.org
 
+//彩虹
+DOMAIN, emby.heisi.org
 host, fych.feiyue.lol
-DOMAIN-KEYWORD, staryuki.me
+
 
 
 
