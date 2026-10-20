@@ -1,8 +1,10 @@
 #emby
 
-//彩虹
+#彩虹
 DOMAIN, emby.heisi.org
-host, fych.feiyue.lol
+DOMAIN, fych.feiyue.lol
+#终点站
+DOMAIN, c.emby.wtf
 
 
 
