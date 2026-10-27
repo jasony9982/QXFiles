@@ -1,0 +1,215 @@
+
+/**
+ * Loon Generic Script
+ * IPPure 节点详情 / 纯净度检测
+ */
+
+const API_URL = "https://my.ippure.com/v1/info";
+const TIMEOUT = 10000;
+
+let finished = false;
+const startTime = Date.now();
+
+function finish(title, content) {
+  if (finished) return;
+  finished = true;
+  console.log(content);
+  $done({
+    title: title,
+    content: content
+  });
+}
+
+function safe(value, fallback) {
+  if (value === undefined || value === null || value === "") {
+    return fallback || "N/A";
+  }
+  return String(value);
+}
+
+function getRiskLevel(score) {
+  if (score <= 25) return "低风险 ✅";
+  if (score <= 50) return "中风险 🟡";
+  if (score <= 75) return "高风险 ⚠️";
+  return "极高风险 ‼️";
+}
+
+function getFlagEmoji(countryCode) {
+  if (!countryCode || !/^[A-Za-z]{2}$/.test(countryCode)) {
+    return "🌍";
+  }
+
+  return String.fromCodePoint(
+    ...countryCode.toUpperCase().split("").map(function (c) {
+      return 127397 + c.charCodeAt(0);
+    })
+  );
+}
+
+function getNodeName(params) {
+  if (params.node) return params.node;
+
+  if (params.nodeInfo) {
+    if (params.nodeInfo.name) return params.nodeInfo.name;
+  }
+
+  return "";
+}
+
+function makeReport(data, node) {
+  const ip = safe(data.ip);
+  const isp = safe(data.asOrganization);
+  const asn = data.asn ? "AS" + data.asn : "N/A";
+
+  const locationParts = [];
+  if (data.countryCode) {
+    locationParts.push(
+      getFlagEmoji(data.countryCode) + " " + data.countryCode
+    );
+  }
+  if (data.region) locationParts.push(data.region);
+  if (data.city) locationParts.push(data.city);
+
+  const location = locationParts.length
+    ? locationParts.join(" - ")
+    : "N/A";
+
+  let networkType = "未知";
+  if (data.isResidential === true) {
+    networkType = "住宅网络 🏠";
+  } else if (data.isResidential === false) {
+    networkType = "数据中心 🏢";
+  }
+
+  const rawScore = data.fraudScore;
+  const score = Number(rawScore);
+  const validScore =
+    rawScore !== null &&
+    rawScore !== undefined &&
+    rawScore !== "" &&
+    Number.isFinite(score) &&
+    score >= 0 &&
+    score <= 100;
+
+  const risk = validScore
+    ? getRiskLevel(score)
+    : "暂无有效欺诈评分";
+
+  const lines = [
+    "节点纯净度报告",
+    "",
+    "节点：" + node,
+    "",
+    "出口 IP：" + ip,
+    "",
+    "ISP：" + isp,
+    "",
+    "ASN：" + asn,
+    "",
+    "位置：" + location,
+    "",
+    "类型：" + networkType,
+    "",
+    "欺诈值：" + (validScore ? score + " 分" : "暂无"),
+    "",
+    "风险等级：" + risk,
+    "",
+    "耗时：" + (Date.now() - startTime) + " ms",
+    "",
+    "数据源：IPPure API",
+    "说明：风险等级按原脚本的欺诈分数区间计算，不等同于所有目标网站的实际风控结果。"
+  ];
+
+  return lines.join("\n");
+}
+
+function handleError(message, detail) {
+  const lines = [
+    "节点纯净度报告",
+    "",
+    "检测失败：" + message
+  ];
+
+  if (detail) lines.push("", "详情：" + detail);
+
+  lines.push(
+    "",
+    "耗时：" + (Date.now() - startTime) + " ms",
+    "",
+    "请检查 IPPure API 是否可用，以及当前节点是否能正常访问该接口。"
+  );
+
+  finish("🔎 IPPure 节点详情", lines.join("\n"));
+}
+
+const params =
+  typeof $environment !== "undefined"
+    ? ($environment.params || {})
+    : {};
+
+const node = getNodeName(params);
+
+if (!node) {
+  handleError(
+    "无法获取当前节点",
+    "请从 Loon 节点列表长按节点后执行 Generic 脚本。"
+  );
+} else {
+  $httpClient.get(
+    {
+      url: API_URL,
+      timeout: TIMEOUT,
+      node: node,
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1",
+        "Accept": "application/json"
+      }
+    },
+    function (error, response, data) {
+      if (error) {
+        handleError("请求失败或超时", String(error));
+        return;
+      }
+
+      if (!response) {
+        handleError("没有收到 HTTP 响应");
+        return;
+      }
+
+      if (response.status < 200 || response.status >= 300) {
+        let message = "HTTP " + response.status;
+
+        if (response.status === 403) {
+          message += "：API 拒绝请求，可能是接口权限或访问策略限制";
+        } else if (response.status === 429) {
+          message += "：请求过于频繁，请稍后重试";
+        }
+
+        handleError(message);
+        return;
+      }
+
+      let result;
+      try {
+        result = typeof data === "string" ? JSON.parse(data) : data;
+      } catch (e) {
+        handleError("JSON 解析失败", String(e));
+        return;
+      }
+
+      if (!result || typeof result !== "object" || !result.ip) {
+        handleError(
+          "API 返回数据缺少出口 IP",
+          "请检查接口返回格式是否发生变化"
+        );
+        return;
+      }
+
+      finish(
+        "🔎 IPPure 节点详情",
+        makeReport(result, node)
+      );
+    }
+  );
+}
